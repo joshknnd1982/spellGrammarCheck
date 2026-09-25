@@ -5,6 +5,7 @@ An .nvda-addon file is a zip archive containing the add-on's files with
 manifest.ini at the archive root. Run: python build.py
 """
 
+import hashlib
 import os
 import re
 import zipfile
@@ -36,7 +37,14 @@ def main():
 				filePath = os.path.join(dirPath, fileName)
 				arcName = os.path.relpath(filePath, ADDON_DIR).replace(os.sep, "/")
 				bundle.write(filePath, arcName)
+	with open(outFile, "rb") as f:
+		digest = hashlib.sha256(f.read()).hexdigest()
+	# Upload this next to the add-on in the GitHub release; the add-on's update
+	# check makes sure its download matches it.
+	with open(outFile + ".sha256", "w", encoding="ascii", newline="\n") as f:
+		f.write(f"{digest}  {os.path.basename(outFile)}\n")
 	print(f"Built {outFile}")
+	print(f"SHA-256 {digest}")
 
 
 if __name__ == "__main__":

@@ -44,6 +44,8 @@ import winUser
 from gui import guiHelper, settingsDialogs
 from logHandler import log
 
+from . import updater
+
 try:
 	addonHandler.initTranslation()
 except Exception:
@@ -2927,9 +2929,11 @@ class SpellGrammarCheckPanel(settingsDialogs.SettingsPanel):
 	def makeSettings(self, settingsSizer):
 		helper = guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 		_addChoices(self, helper)
+		self.updates = updater.SettingsControls(self, helper)
 
 	def onSave(self):
 		_saveChoices(self)
+		self.updates.save()
 
 	def onPanelActivated(self):
 		_refreshChoices(self)
@@ -2980,6 +2984,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		# Editor replacement; the script passes Alt+C through everywhere else.
 		self.bindGesture("kb:alt+c", "applyProofingSuggestion")
 		self.bindGesture("kb:alt+x", "ignoreProofingIssue")
+		updater.start()
 
 		try:
 			self._installSpeechHooks()
@@ -3458,6 +3463,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def terminate(self):
 		global _pluginInstance
 		_pluginInstance = None
+		updater.stop()
 		if self._ownPanelAdded:
 			try:
 				settingsDialogs.NVDASettingsDialog.categoryClasses.remove(SpellGrammarCheckPanel)
@@ -3628,3 +3634,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		except Exception:
 			log.debugWarning("Spelling and Grammar Check: could not inspect the Alt+X proofing focus", exc_info=True)
 		gesture.send()
+
+	@scriptHandler.script(
+		# Translators: Description of a command, shown in the Input Gestures dialog.
+		description=_("Checks for Spelling and Grammar Check updates"),
+	)
+	def script_checkForUpdates(self, gesture):
+		updater.checkForUpdates()
