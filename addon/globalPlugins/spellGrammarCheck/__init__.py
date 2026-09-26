@@ -411,12 +411,6 @@ def _caretHasGrammarError(obj):
 
 def _correctEditingGrammarLabel(args, kwargs):
 	"""Replace NVDA's spelling label when an editor exposes a grammar annotation."""
-	try:
-		focus = api.getFocusObject()
-	except Exception:
-		return args, kwargs
-	if not _caretHasGrammarError(focus):
-		return args, kwargs
 	if args:
 		sequence = args[0]
 	elif "speechSequence" in kwargs:
@@ -426,11 +420,22 @@ def _correctEditingGrammarLabel(args, kwargs):
 	if not isinstance(sequence, list):
 		return args, kwargs
 	labels = {"misspelled", _("misspelled").strip().casefold()}
-	grammarLabel = _("Grammar error")
 	pattern = re.compile(
 		r"(?<!\w)(?:%s)(?!\w)" % "|".join(re.escape(label) for label in labels if label),
 		re.IGNORECASE,
 	)
+	# Only speech that says "misspelled" is looked at in the editor. Asking Outlook about
+	# its caret takes several calls into Outlook for every utterance, and while Outlook
+	# was busy copying a message those calls froze NVDA for ten seconds after Control+C.
+	if not any(isinstance(item, str) and pattern.search(item) for item in sequence):
+		return args, kwargs
+	try:
+		focus = api.getFocusObject()
+	except Exception:
+		return args, kwargs
+	if not _caretHasGrammarError(focus):
+		return args, kwargs
+	grammarLabel = _("Grammar error")
 	filtered = []
 	for item in sequence:
 		if not isinstance(item, str):

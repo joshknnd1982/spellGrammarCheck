@@ -5,7 +5,7 @@ spelling and grammar checker in Microsoft Word and Microsoft Outlook clearly,
 and nothing else.
 
 * Author: Josh Kennedy
-* Version: 1.0.71
+* Version: 1.0.72
 * Compatibility: NVDA 2026.1 through 2026.2
 * Download: grab the `.nvda-addon` file from the
   [releases page](https://github.com/joshknnd1982/spellGrammarCheck/releases)
@@ -57,9 +57,9 @@ Requires Python 3. From the repository root:
 python build.py
 ```
 
-This produces `spellGrammarCheck-1.0.71.nvda-addon` and its `.sha256` checksum
+This produces `spellGrammarCheck-1.0.72.nvda-addon` and its `.sha256` checksum
 file in the repository root. Upload both to the GitHub release: the update check
-reads the release's tag, such as `v1.0.71`, and checks the download against the
+reads the release's tag, such as `v1.0.72`, and checks the download against the
 checksum.
 
 ## Repository layout
@@ -72,6 +72,7 @@ addon/
       __init__.py       The global plugin
       updater.py        The GitHub update check, shared by all of joshknnd1982's
                         add-ons; keep it identical
+tests/                  Unit tests: python -m unittest discover -s tests
 build.py                Builds the .nvda-addon package
 ```
 
