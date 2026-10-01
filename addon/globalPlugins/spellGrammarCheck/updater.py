@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Update checking shared by the NVDA add-ons published at https://github.com/joshknnd1982
 # Copyright (C) 2026 Josh Kennedy <joshknnd1982@gmail.com>
-# This file is covered by the GNU General Public License, version 2 or later.
-# It follows ClassicSpeech's update check (https://github.com/joshknnd1982/classicspeech-nvda,
-# also GPL 2) and the JAWS Migration Assistant's, so all of these add-ons behave the same way.
+# This file is covered by the MIT License.
+# It follows ClassicSpeech's update check (https://github.com/joshknnd1982/classicspeech-nvda)
+# and the JAWS Migration Assistant's, so all of these add-ons behave the same way.
 
 """Check GitHub for a newer version of this add-on, download it and install it with NVDA.
 

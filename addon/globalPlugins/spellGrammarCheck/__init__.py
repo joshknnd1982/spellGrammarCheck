@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Spelling and Grammar Check, an NVDA add-on.
-# Derived from Mute Browse Mode by Josh Kennedy (GNU GPL v2).
-# This file is covered by the GNU General Public License, version 2.
+# Derived from Mute Browse Mode by Josh Kennedy (MIT).
+# This file is covered by the MIT License.
 
 """Reads Word and Outlook's F7 spelling and grammar checker clearly.
 

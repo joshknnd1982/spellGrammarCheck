@@ -84,4 +84,4 @@ Store.
 
 ## License
 
-GNU General Public License version 2. See [LICENSE](LICENSE).
+MIT License. See [LICENSE](LICENSE).
